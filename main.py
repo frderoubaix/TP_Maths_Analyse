@@ -3,6 +3,7 @@ import numpy as np
 from math import *
 import matplotlib.pyplot as plt
 
+
 def f(x):
     return sqrt(1 + x)
 
@@ -27,5 +28,12 @@ PL = Lagrange(f, 0, 1, 2)
 
 f2 = np.vectorize(f)
 xp = np.linspace(0, 1, 100)
+
+plot1 = plt.figure(1)
+plt.plot(xp, f2(xp), 'r')
+plt.plot(xp, PL(xp), 'g')
+
+plot1 = plt.figure(2)
 plt.plot(xp, f2(xp) - PL(xp), 'r')
+
 plt.show()
