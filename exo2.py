@@ -1,5 +1,6 @@
 import numpy as np
 from math import *
+import matplotlib.pyplot as plt
 
 X = np.poly1d([1, 0])
 
@@ -67,6 +68,12 @@ def calcul_yi(xi, f):
     return yi
 
 
+def P1_n(n):
+    P1_n_xi = comparaison(equirepartis, -5, 5, n)
+    P1_n_dd = diffdiv(P1_n_xi, calcul_yi(P1_n_xi, function2))
+    return myhorner(P1_n_dd, P1_n_xi)
+
+
 xi = [-1, 0, 2, 5]
 yi = [-2, 2, 4, 1]
 
@@ -82,14 +89,21 @@ print(comparaison(equirepartis, 0, 1, 18))
 print(comparaison(tchbychev, -1, 1, 8))
 
 # test création du polynome d'interpolation P1
-P1_xi = comparaison(equirepartis, -2, 2, )
+P1_xi = comparaison(equirepartis, -2, 2, 2)
 print(P1_xi)
 P1_dd = diffdiv(P1_xi, calcul_yi(P1_xi, function1))
 P1 = myhorner(P1_dd, P1_xi)
-print(P1)
-
 
 P2_xi = comparaison(tchbychev, -2, 2, 8)
 P2_dd = diffdiv(P2_xi, calcul_yi(P2_xi, function1))
 P2 = myhorner(P2_dd, P2_xi)
-print(P2)
+
+f1 = np.vectorize(function2)
+
+plot1 = plt.figure(1)
+xp = np.linspace(-5, 5)
+plt.plot(xp, f1(xp), 'b')
+for i in range(5, 12):
+    plt.plot(xp, P1_n(i)(xp))
+plt.show()
+
