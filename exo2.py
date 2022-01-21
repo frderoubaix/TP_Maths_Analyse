@@ -1,6 +1,17 @@
 import numpy as np
+from math import *
 
 X = np.poly1d([1, 0])
+
+
+def function1(x):
+    if x == 0:
+        return 1
+    return sin(2 * pi * x) / (2 * pi * x)
+
+
+def function2(x):
+    return 1 / (1 + pow(x, 2))
 
 
 # retourne dd les différences divisées
@@ -30,8 +41,30 @@ def myhorner(dd, xi):
 def concat(i, xi, x=X):
     concat_mult = 1
     for j in range(0, i):
-        concat_mult = concat_mult * (x-xi[j])
+        concat_mult = concat_mult * (x - xi[j])
     return concat_mult
+
+
+def equirepartis(a, b, i, n):
+    return a + (i - 1) * ((b - a) / (n - 1))
+
+
+def tchbychev(a, b, i, n):
+    return ((a + b) / 2) * a + ((b - a) / 2) * cos((2 * i - 1) * (pi / (2 * n)))
+
+
+def comparaison(f, a, b, n):
+    xi = []
+    for i in range(1, n + 1):
+        xi.append(f(a, b, i, n))
+    return xi
+
+
+def calcul_yi(xi, f):
+    yi = []
+    for i in range(0, xi.__len__()):
+        yi.append(f(xi[i]))
+    return yi
 
 
 xi = [-1, 0, 2, 5]
@@ -43,3 +76,20 @@ print(dd)
 
 # test myhorner
 print(myhorner(dd, xi))
+
+# test comparaison
+print(comparaison(equirepartis, 0, 1, 18))
+print(comparaison(tchbychev, -1, 1, 8))
+
+# test création du polynome d'interpolation P1
+P1_xi = comparaison(equirepartis, -2, 2, )
+print(P1_xi)
+P1_dd = diffdiv(P1_xi, calcul_yi(P1_xi, function1))
+P1 = myhorner(P1_dd, P1_xi)
+print(P1)
+
+
+P2_xi = comparaison(tchbychev, -2, 2, 8)
+P2_dd = diffdiv(P2_xi, calcul_yi(P2_xi, function1))
+P2 = myhorner(P2_dd, P2_xi)
+print(P2)
