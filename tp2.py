@@ -12,8 +12,10 @@ def factoLU(a):
 
 
 def drLU(C, b):
-    lu =
-    return la.lu_solve(C, b)
+    lu = np.hsplit(C, 2)
+    lu = lu[1] + lu[0]
+    print(lu)
+    # return la.lu_solve(lu, b)
 
 
 
@@ -26,5 +28,5 @@ b = np.array([[1],
               [3],
               [6]])
 lu, piv = la.lu_factor(A)
-print(la.lu_solve((lu, piv), b))
-# print(drLU(LU, b))
+drLU(LU, b)
+print(lu)

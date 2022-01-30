@@ -68,10 +68,28 @@ def calcul_yi(xi, f):
     return yi
 
 
-def P1_n(n):
+def P1_n_function1(n):
+    P1_n_xi = comparaison(equirepartis, -2, 2, n)
+    P1_n_dd = diffdiv(P1_n_xi, calcul_yi(P1_n_xi, function1))
+    return myhorner(P1_n_dd, P1_n_xi)
+
+
+def P2_n_function1(n):
+    P2_n_xi = comparaison(tchbychev, -2, 2, n)
+    P2_n_dd = diffdiv(P2_n_xi, calcul_yi(P2_n_xi, function1))
+    return myhorner(P2_n_dd, P2_n_xi)
+
+
+def P1_n_function2(n):
     P1_n_xi = comparaison(equirepartis, -5, 5, n)
     P1_n_dd = diffdiv(P1_n_xi, calcul_yi(P1_n_xi, function2))
     return myhorner(P1_n_dd, P1_n_xi)
+
+
+def P2_n_function2(n):
+    P2_n_xi = comparaison(tchbychev, -5, 5, n)
+    P2_n_dd = diffdiv(P2_n_xi, calcul_yi(P2_n_xi, function2))
+    return myhorner(P2_n_dd, P2_n_xi)
 
 
 xi = [-1, 0, 2, 5]
@@ -89,21 +107,34 @@ print(comparaison(equirepartis, 0, 1, 18))
 print(comparaison(tchbychev, -1, 1, 8))
 
 # test création du polynome d'interpolation P1
-P1_xi = comparaison(equirepartis, -2, 2, 2)
-print(P1_xi)
-P1_dd = diffdiv(P1_xi, calcul_yi(P1_xi, function1))
-P1 = myhorner(P1_dd, P1_xi)
+f1 = np.vectorize(function1)
+f2 = np.vectorize(function2)
 
-P2_xi = comparaison(tchbychev, -2, 2, 8)
-P2_dd = diffdiv(P2_xi, calcul_yi(P2_xi, function1))
-P2 = myhorner(P2_dd, P2_xi)
 
-f1 = np.vectorize(function2)
-
+xp1 = np.linspace(-2, 2)
+xp2 = np.linspace(-5, 5)
+# P1 equirépartis et fonction 1
 plot1 = plt.figure(1)
-xp = np.linspace(-5, 5)
-plt.plot(xp, f1(xp), 'b')
+plt.plot(xp1, f1(xp1), 'b')
 for i in range(5, 12):
-    plt.plot(xp, P1_n(i)(xp))
-plt.show()
+    plt.plot(xp1, P1_n_function1(i)(xp1))
 
+# P2 Tchebychev et fonction 1
+plot1 = plt.figure(2)
+plt.plot(xp1, f1(xp1), 'b')
+for i in range(5, 12):
+    plt.plot(xp1, P2_n_function1(i)(xp1))
+
+# P1 equirépartis et fonction 2
+plot1 = plt.figure(3)
+plt.plot(xp2, f2(xp2), 'b')
+for i in range(5, 12):
+    plt.plot(xp2, P1_n_function2(i)(xp2))
+
+# P2 Tchebychev et fonction 2
+plot1 = plt.figure(4)
+plt.plot(xp2, f2(xp2), 'b')
+for i in range(5, 12):
+    plt.plot(xp2, P2_n_function2(i)(xp2))
+
+plt.show()
