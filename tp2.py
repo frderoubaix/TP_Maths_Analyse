@@ -26,14 +26,20 @@ def drLU(C, b):
     lu = np.hsplit(C, 3)
     final_lu = np.add(lu[1], lu[0]) - lu[2]
     piv = la.lu_factor(A)
-    return la.lu_solve((final_lu, piv[1]), b)
+    return final_lu, piv[1]
+
+
+def solveLU(A, b):
+    LUP = factoLU(A)
+    (lu, piv) = drLU(LUP, b)
+    return la.lu_solve((lu, piv), b)
 
 
 # test facto LU
 LU = factoLU(A)
 print(LU)
 
-# test drLU
+# test solveLU
 b = np.array([
                 [0],
                 [0],
@@ -47,6 +53,6 @@ b = np.array([
                 [0],
                 [0]
 ])
-result = drLU(LU, b)
+result = solveLU(A, b)
 
 print(result)
